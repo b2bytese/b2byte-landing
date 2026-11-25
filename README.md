@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# B2byte Software Engineering — Landing Page
 
-## Getting Started
+Landing page institucional da **B2byte Software Engineering** construída com Next.js App Router, Tailwind CSS v4, validação ponta a ponta com Zod v4 e envio transacional de contatos via Resend.
 
-First, run the development server:
+## Stack
+
+- **Framework:** Next.js 16 (App Router, `cacheComponents`, `partialPrefetching`, Turbopack)
+- **UI & Estilo:** React 19, Tailwind CSS v4, Lucide React
+- **Formulários & Validação:** React Hook Form, Zod v4 (`@hookform/resolvers`)
+- **E-mail:** Resend (`POST /api/contact`)
+- **Qualidade & Testes:** TypeScript (`strict`), ESLint (`eslint-config-next`), Vitest + Testing Library
+
+## Variáveis de ambiente
+
+Copie `.env.example` para `.env.local` e preencha os valores:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Variável | Descrição | Obrigatória |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Chave da API do Resend para disparo de e-mails | Sim (envio de contato) |
+| `CONTACT_FROM_EMAIL` | Remetente verificado no Resend (ex.: `contato@b2byte.com.br`) | Sim (envio de contato) |
+| `CONTACT_TO_EMAIL` | Destinatário que receberá os leads do formulário | Sim (envio de contato) |
+| `NEXT_PUBLIC_SITE_URL` | URL canônica do site (padrão: `https://b2byte.com.br`) | Não |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Comandos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev      # Servidor de desenvolvimento (http://localhost:3000)
+npm test         # Executa a suíte de testes unitários e de componentes (Vitest)
+npm run lint     # Verificação ESLint
+npx tsc --noEmit # Checagem estática de tipos TypeScript
+npm run build    # Build de produção
+npm run start    # Inicia o servidor de produção
+```
 
-## Learn More
+## Estrutura principal
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+src/
+├── app/
+│   ├── api/contact/route.ts         # Endpoint POST com validação Zod, rate limit e Resend
+│   ├── politica-de-privacidade/     # Página de Política de Privacidade (LGPD)
+│   ├── icon.svg                     # Favicon da marca
+│   ├── opengraph-image.tsx          # Imagem OpenGraph 1200x630 gerada via next/og
+│   ├── twitter-image.tsx            # Imagem Twitter Card 1200x630
+│   ├── robots.ts                    # Regras de indexação (disallow /api/)
+│   ├── sitemap.ts                   # Sitemap estático
+│   ├── globals.css                  # Tokens @theme e estilos @layer base (Tailwind v4)
+│   ├── layout.tsx                   # Fontes (next/font) e metadados globais
+│   └── page.tsx                     # Landing page principal
+├── components/
+│   ├── illustrations/               # DashboardMockup ilustrativo
+│   ├── layout/                      # Navbar e Footer
+│   ├── sections/                    # Hero, Solutions, Differentials, Process, Segments, FAQ, Contact
+│   └── ui/                          # Accordion, Badge, Button, FormFields, SectionHeading
+├── config/site.ts                   # Configuração institucional e links
+├── data/                            # Conteúdo estruturado (services, process, faq)
+└── lib/                             # Validação Zod, rate-limit, cliente Resend e utilitários
+```
