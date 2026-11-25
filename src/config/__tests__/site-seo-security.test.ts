@@ -22,6 +22,10 @@ describe("SEO, siteConfig, LGPD e headers de segurança", () => {
     expect(resolveSiteUrl!(" https://example.com/// ")).toBe(
       "https://example.com"
     );
+    expect(resolveSiteUrl!("b2byte.com.br")).toBe("https://b2byte.com.br");
+    expect(resolveSiteUrl!("javascript:alert(1)")).toBe(
+      "https://b2byte.com.br"
+    );
   });
 
   it("siteConfig.nav e siteConfig.footer prefixam todas as âncoras com /#", () => {
@@ -78,5 +82,17 @@ describe("SEO, siteConfig, LGPD e headers de segurança", () => {
     expect(privacyMetadata.alternates?.canonical).toBe(
       "/politica-de-privacidade"
     );
+
+    const og = privacyMetadata.openGraph as Record<string, unknown> | undefined;
+    expect(og?.type).toBe("website");
+    expect(og?.locale).toBe("pt_BR");
+    expect(og?.siteName).toBe(siteModule.siteConfig.name);
+    expect(og?.images).toBeDefined();
+
+    const tw = privacyMetadata.twitter as Record<string, unknown> | undefined;
+    expect(tw?.card).toBe("summary_large_image");
+    expect(tw?.title).toMatch(/Política de Privacidade/i);
+    expect(tw?.description).toMatch(/Política de privacidade/i);
+    expect(tw?.images).toBeDefined();
   });
 });

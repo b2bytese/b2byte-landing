@@ -9,9 +9,26 @@ export const metadata: Metadata = {
     canonical: "/politica-de-privacidade",
   },
   openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: siteConfig.name,
     url: "/politica-de-privacidade",
     title: `Política de Privacidade | ${siteConfig.name}`,
     description: `Política de privacidade da ${siteConfig.name}.`,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — Desenvolvimento de Software Sob Medida`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Política de Privacidade | ${siteConfig.name}`,
+    description: `Política de privacidade da ${siteConfig.name}.`,
+    images: ["/twitter-image"],
   },
 };
 

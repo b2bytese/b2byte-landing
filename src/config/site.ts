@@ -2,7 +2,17 @@ const DEFAULT_SITE_URL = "https://b2byte.com.br";
 
 export function resolveSiteUrl(rawUrl?: string): string {
   const cleaned = rawUrl?.trim().replace(/\/+$/, "");
-  return cleaned || DEFAULT_SITE_URL;
+  if (!cleaned) return DEFAULT_SITE_URL;
+
+  try {
+    const parsed = new URL(cleaned);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return DEFAULT_SITE_URL;
+    }
+    return cleaned;
+  } catch {
+    return DEFAULT_SITE_URL;
+  }
 }
 
 export const siteConfig = {
