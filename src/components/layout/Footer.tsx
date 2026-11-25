@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 
+// Fixed year keeps Footer prerender-compatible under Next.js `cacheComponents: true` (avoids dynamic Date() access).
 const YEAR = 2026;
 
 export function Footer() {
@@ -13,7 +14,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between gap-10 mb-10">
           <div className="max-w-xs">
             <Link
-              href="#inicio"
+              href="/#inicio"
               aria-label="B2byte — início"
               className="inline-block mb-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] rounded"
             >

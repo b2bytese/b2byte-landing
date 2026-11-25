@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Eyebrow } from "@/components/ui/Badge";
+import { buttonVariants } from "@/components/ui/Button";
 
 const differentials = [
   {
@@ -64,9 +65,9 @@ export function DifferentialsSection() {
 
           <Link
             href="#contato"
-            className="inline-flex items-center justify-center gap-3 rounded-[9px] px-5 py-[13px] text-sm font-semibold bg-white/5 border border-white/[0.14] text-white hover:bg-white/[0.09] transition-all duration-200"
+            className={buttonVariants({ variant: "ghost" })}
           >
-            Conheça nossa abordagem ↗
+            Conheça nossa abordagem <span aria-hidden="true">↗</span>
           </Link>
         </div>
 

@@ -22,9 +22,15 @@ export default function Home() {
             <strong className="text-[var(--color-brand-text)] font-medium">
               Construído para o seu negócio.
             </strong>
-            <span>◈ &nbsp; Engenharia de software</span>
-            <span>⌘ &nbsp; Desenvolvimento sob medida</span>
-            <span>↗ &nbsp; Evolução contínua</span>
+            <span>
+              <span aria-hidden="true">◈</span> &nbsp; Engenharia de software
+            </span>
+            <span>
+              <span aria-hidden="true">⌘</span> &nbsp; Desenvolvimento sob medida
+            </span>
+            <span>
+              <span aria-hidden="true">↗</span> &nbsp; Evolução contínua
+            </span>
           </div>
         </div>
 

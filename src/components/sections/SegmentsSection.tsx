@@ -33,19 +33,19 @@ export function SegmentsSection() {
           </p>
         </div>
 
-        <div
-          className="flex flex-wrap gap-2.5"
+        <ul
+          className="flex flex-wrap gap-2.5 list-none p-0 m-0"
           aria-label="Segmentos atendidos"
         >
           {segments.map((segment) => (
-            <span
+            <li
               key={segment}
               className="px-[18px] py-3 border border-white/[0.1] rounded-[8px] text-[var(--color-muted)] bg-[var(--color-surface)] text-sm"
             >
               {segment}
-            </span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
