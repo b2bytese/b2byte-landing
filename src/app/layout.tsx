@@ -54,11 +54,6 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — Desenvolvimento de Software Sob Medida`,
     description: siteConfig.description,
   },
-  icons: {
-    icon: [
-      { url: "/images/favicon.svg", type: "image/svg+xml" },
-    ],
-  },
   robots: {
     index: true,
     follow: true,

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
+import { buttonVariants } from "@/components/ui/Button";
 import { DashboardMockup } from "@/components/illustrations/DashboardMockup";
 
 export function HeroSection() {
@@ -32,15 +33,15 @@ export function HeroSection() {
         <div className="flex gap-3 justify-center flex-wrap">
           <Link
             href="#contato"
-            className="inline-flex items-center justify-center gap-3 rounded-[9px] px-5 py-[13px] text-sm font-semibold bg-[var(--color-primary)] text-white hover:bg-[#6358f0] hover:-translate-y-0.5 transition-all duration-200"
+            className={buttonVariants({ variant: "primary" })}
           >
-            Começar meu projeto ↗
+            Começar meu projeto <span aria-hidden="true">↗</span>
           </Link>
           <Link
             href="#solucoes"
-            className="inline-flex items-center justify-center gap-3 rounded-[9px] px-5 py-[13px] text-sm font-semibold bg-white/5 border border-white/[0.14] text-white hover:bg-white/[0.09] transition-all duration-200"
+            className={buttonVariants({ variant: "ghost" })}
           >
-            Explorar soluções ↓
+            Explorar soluções <span aria-hidden="true">↓</span>
           </Link>
         </div>
 

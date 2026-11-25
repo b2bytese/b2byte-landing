@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -7,6 +8,12 @@ import { ProcessSection } from "@/components/sections/ProcessSection";
 import { SegmentsSection } from "@/components/sections/SegmentsSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (
@@ -22,9 +29,15 @@ export default function Home() {
             <strong className="text-[var(--color-brand-text)] font-medium">
               Construído para o seu negócio.
             </strong>
-            <span>◈ &nbsp; Engenharia de software</span>
-            <span>⌘ &nbsp; Desenvolvimento sob medida</span>
-            <span>↗ &nbsp; Evolução contínua</span>
+            <span>
+              <span aria-hidden="true">◈</span> &nbsp; Engenharia de software
+            </span>
+            <span>
+              <span aria-hidden="true">⌘</span> &nbsp; Desenvolvimento sob medida
+            </span>
+            <span>
+              <span aria-hidden="true">↗</span> &nbsp; Evolução contínua
+            </span>
           </div>
         </div>
 

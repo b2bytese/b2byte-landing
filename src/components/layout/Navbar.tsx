@@ -2,15 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X, Menu } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/Button";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
 
   return (
     <header className="sticky top-0 z-20 bg-[#0b0f1aed] backdrop-blur-[16px] border-b border-white/[0.07]">
@@ -19,7 +33,7 @@ export function Navbar() {
         aria-label="Navegação principal"
       >
         <Link
-          href="#inicio"
+          href="/#inicio"
           aria-label="B2byte — início"
           className="flex-shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] rounded"
           onClick={closeMenu}
@@ -29,7 +43,7 @@ export function Navbar() {
             alt="B2byte Software Engineering"
             width={126}
             height={54}
-            priority
+            preload
           />
         </Link>
 
@@ -47,21 +61,29 @@ export function Navbar() {
         </div>
 
         <Link
-          href="#contato"
-          className="hidden md:inline-flex items-center justify-center gap-3 rounded-[9px] px-5 py-[13px] text-sm font-semibold bg-[var(--color-primary)] border border-transparent text-white hover:bg-[#6358f0] hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          href="/#contato"
+          className={buttonVariants({
+            variant: "primary",
+            className: "hidden md:inline-flex",
+          })}
         >
-          Vamos conversar ↗
+          Vamos conversar <span aria-hidden="true">↗</span>
         </Link>
 
         {/* Mobile menu toggle */}
         <button
+          type="button"
           className="md:hidden p-2 rounded-lg text-[var(--color-muted)] hover:text-white transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]"
           aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
           onClick={() => setMenuOpen((v) => !v)}
         >
-          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          {menuOpen ? (
+            <X size={20} aria-hidden="true" />
+          ) : (
+            <Menu size={20} aria-hidden="true" />
+          )}
         </button>
       </nav>
 
@@ -85,11 +107,14 @@ export function Navbar() {
             </Link>
           ))}
           <Link
-            href="#contato"
+            href="/#contato"
             onClick={closeMenu}
-            className="mt-2 inline-flex items-center justify-center gap-3 rounded-[9px] px-5 py-[13px] text-sm font-semibold bg-[var(--color-primary)] text-white hover:bg-[#6358f0] transition-colors"
+            className={buttonVariants({
+              variant: "primary",
+              className: "mt-2",
+            })}
           >
-            Vamos conversar ↗
+            Vamos conversar <span aria-hidden="true">↗</span>
           </Link>
         </div>
       )}

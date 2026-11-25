@@ -6,7 +6,7 @@ export function DashboardMockup() {
         background: "linear-gradient(140deg,#8b7cf629,#121726)",
         boxShadow: "0 0 100px #5046e52b",
       }}
-      aria-label="Interface ilustrativa de dashboard"
+      aria-hidden="true"
     >
       <div className="border border-white/10 rounded-[12px_12px_0_0] bg-[#101522] overflow-hidden">
         {/* Window bar */}
@@ -21,7 +21,7 @@ export function DashboardMockup() {
         {/* Dashboard layout */}
         <div className="grid md:grid-cols-[180px_1fr] min-h-[360px]">
           {/* Sidebar */}
-          <aside className="hidden md:block border-r border-white/[0.07] p-5 text-xs text-[var(--color-muted)]">
+          <div className="hidden md:block border-r border-white/[0.07] p-5 text-xs text-[var(--color-muted)]">
             <b className="text-white block mb-6">◈ &nbsp; Workspace</b>
             <div className="bg-[#8b7cf61c] text-[var(--color-lavender)] rounded-[7px] px-2.5 py-2.5 mb-1">
               ▦ &nbsp; Visão geral
@@ -30,7 +30,7 @@ export function DashboardMockup() {
             <div className="px-2.5 py-2.5 mb-1">◇ &nbsp; Clientes</div>
             <div className="px-2.5 py-2.5 mb-1">↗ &nbsp; Automações</div>
             <div className="px-2.5 py-2.5">⚙ &nbsp; Configurações</div>
-          </aside>
+          </div>
 
           {/* Main panel */}
           <div className="p-4 md:p-6">
@@ -72,7 +72,6 @@ export function DashboardMockup() {
                   viewBox="0 0 360 120"
                   preserveAspectRatio="none"
                   className="w-full h-[120px] mt-2 block"
-                  aria-label="Gráfico ilustrativo de atividade"
                 >
                   <defs>
                     <linearGradient id="chartGrad" x2="0" y2="1">
