@@ -1,13 +1,24 @@
 import { Resend } from "resend";
 
-const apiKey = process.env.RESEND_API_KEY;
+let cachedClient: Resend | null = null;
+let cachedApiKey: string | undefined;
 
-export const resend = apiKey ? new Resend(apiKey) : null;
+export function getResendClient(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) return null;
+
+  if (!cachedClient || cachedApiKey !== apiKey) {
+    cachedClient = new Resend(apiKey);
+    cachedApiKey = apiKey;
+  }
+
+  return cachedClient;
+}
 
 export function isResendConfigured(): boolean {
-  return !!(
-    process.env.RESEND_API_KEY &&
-    process.env.CONTACT_FROM_EMAIL &&
-    process.env.CONTACT_TO_EMAIL
+  return Boolean(
+    process.env.RESEND_API_KEY?.trim() &&
+      process.env.CONTACT_FROM_EMAIL?.trim() &&
+      process.env.CONTACT_TO_EMAIL?.trim()
   );
 }

@@ -1,45 +1,55 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { contactSchema, projectTypeLabels } from "@/lib/validations";
-import { resend, isResendConfigured } from "@/lib/resend";
+import { getResendClient, isResendConfigured } from "@/lib/resend";
+import { createRateLimiter, extractClientIp } from "@/lib/rate-limit";
 
 const MAX_PAYLOAD_BYTES = 8_000;
 
-const rateMap = new Map<string, { count: number; reset: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const windowMs = 60_000;
-  const limit = 5;
-
-  const entry = rateMap.get(ip);
-  if (!entry || now > entry.reset) {
-    rateMap.set(ip, { count: 1, reset: now + windowMs });
-    return true;
-  }
-  if (entry.count >= limit) return false;
-  entry.count++;
-  return true;
-}
+const contactRateLimiter = createRateLimiter({
+  windowMs: 60_000,
+  limit: 5,
+  maxEntries: 1_000,
+});
 
 export async function POST(request: Request) {
   const contentLength = request.headers.get("content-length");
-  if (contentLength && parseInt(contentLength) > MAX_PAYLOAD_BYTES) {
-    return NextResponse.json({ message: "Payload muito grande." }, { status: 413 });
+  if (contentLength) {
+    const parsedLength = Number.parseInt(contentLength, 10);
+    if (!Number.isNaN(parsedLength) && parsedLength > MAX_PAYLOAD_BYTES) {
+      return NextResponse.json(
+        { message: "Payload muito grande." },
+        { status: 413 }
+      );
+    }
   }
 
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const ip = extractClientIp(request.headers);
 
-  if (!checkRateLimit(ip)) {
+  if (!contactRateLimiter.check(ip)) {
     return NextResponse.json(
       { message: "Muitas solicitações. Aguarde alguns minutos." },
       { status: 429 }
     );
   }
 
+  let rawBody: string;
+  try {
+    rawBody = await request.text();
+  } catch {
+    return NextResponse.json({ message: "Dados inválidos." }, { status: 400 });
+  }
+
+  if (Buffer.byteLength(rawBody, "utf8") > MAX_PAYLOAD_BYTES) {
+    return NextResponse.json(
+      { message: "Payload muito grande." },
+      { status: 413 }
+    );
+  }
+
   let body: unknown;
   try {
-    body = await request.json();
+    body = JSON.parse(rawBody);
   } catch {
     return NextResponse.json({ message: "Dados inválidos." }, { status: 400 });
   }
@@ -47,36 +57,46 @@ export async function POST(request: Request) {
   const parsed = contactSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { message: "Dados inválidos.", errors: parsed.error.flatten().fieldErrors },
+      {
+        message: "Dados inválidos.",
+        errors: z.flattenError(parsed.error).fieldErrors,
+      },
       { status: 422 }
     );
   }
 
-  const { name, company, email, phone, projectType, message, honeypot } = parsed.data;
+  const { name, company, email, phone, projectType, message, honeypot } =
+    parsed.data;
 
   if (honeypot) {
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true }, { status: 200 });
   }
 
-  if (!isResendConfigured()) {
+  const resendClient = getResendClient();
+  const fromEmail = process.env.CONTACT_FROM_EMAIL?.trim();
+  const toEmail = process.env.CONTACT_TO_EMAIL?.trim();
+
+  if (!resendClient || !isResendConfigured() || !fromEmail || !toEmail) {
+    console.error("[contact/route] Missing email configuration");
     return NextResponse.json(
       {
         message:
-          "O serviço de e-mail ainda não está configurado. Configure as variáveis de ambiente RESEND_API_KEY, CONTACT_FROM_EMAIL e CONTACT_TO_EMAIL.",
+          "Serviço temporariamente indisponível. Tente novamente mais tarde.",
       },
       { status: 503 }
     );
   }
 
   const projectLabel = projectTypeLabels[projectType];
+  const safeName = name.replace(/[\r\n]+/g, " ").trim();
 
   const emailBody = `
 Nova solicitação de contato — B2byte
 
-Nome: ${name}
-Empresa: ${company ?? "Não informado"}
+Nome: ${safeName}
+Empresa: ${company || "Não informado"}
 E-mail: ${email}
-Telefone: ${phone ?? "Não informado"}
+Telefone: ${phone || "Não informado"}
 Tipo de projeto: ${projectLabel}
 
 Mensagem:
@@ -84,20 +104,28 @@ ${message}
   `.trim();
 
   try {
-    await resend!.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL!,
-      to: [process.env.CONTACT_TO_EMAIL!],
+    const { error } = await resendClient.emails.send({
+      from: fromEmail,
+      to: [toEmail],
       replyTo: email,
-      subject: `[B2byte] Novo contato: ${name} — ${projectLabel}`,
+      subject: `[B2byte] Novo contato: ${safeName} — ${projectLabel}`,
       text: emailBody,
     });
 
+    if (error) {
+      console.error("[contact/route] Resend API error:", error);
+      return NextResponse.json(
+        { message: "Erro ao enviar mensagem. Tente novamente mais tarde." },
+        { status: 502 }
+      );
+    }
+
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
-    console.error("[contact/route] Resend error:", err);
+    console.error("[contact/route] Unexpected Resend error:", err);
     return NextResponse.json(
       { message: "Erro ao enviar mensagem. Tente novamente mais tarde." },
-      { status: 500 }
+      { status: 502 }
     );
   }
 }
