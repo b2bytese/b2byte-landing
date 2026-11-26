@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SolutionsSection } from "@/components/sections/SolutionsSection";
 import { DifferentialsSection } from "@/components/sections/DifferentialsSection";
+import { InteractiveShowcase } from "@/components/sections/InteractiveShowcase";
 import { ProcessSection } from "@/components/sections/ProcessSection";
-import { SegmentsSection } from "@/components/sections/SegmentsSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   alternates: {
@@ -18,33 +17,22 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <Navbar />
+      <HeroSection />
 
       <main id="main-content">
-        <HeroSection />
-
         {/* Tagline strip */}
-        <div className="border-t border-b border-white/[0.09] py-6">
-          <div className="w-[min(1160px,calc(100%-48px))] mx-auto flex justify-between gap-5 flex-wrap text-[var(--color-muted)] text-[13px]">
-            <strong className="text-[var(--color-brand-text)] font-medium">
-              Construído para o seu negócio.
-            </strong>
-            <span>
-              <span aria-hidden="true">◈</span> &nbsp; Engenharia de software
-            </span>
-            <span>
-              <span aria-hidden="true">⌘</span> &nbsp; Desenvolvimento sob medida
-            </span>
-            <span>
-              <span aria-hidden="true">↗</span> &nbsp; Evolução contínua
-            </span>
+        <div className="border-b border-[var(--color-border)] py-[27px]">
+          <div className="w-[min(1480px,calc(100%-100px))] mx-auto flex justify-between gap-4 flex-wrap font-mono text-[12px] text-[var(--color-muted)]">
+            <span>01 / ENGENHARIA DE SOFTWARE</span>
+            <span>02 / DESENVOLVIMENTO SOB MEDIDA</span>
+            <span>03 / EVOLUÇÃO CONTÍNUA</span>
           </div>
         </div>
 
         <SolutionsSection />
         <DifferentialsSection />
+        <InteractiveShowcase />
         <ProcessSection />
-        <SegmentsSection />
         <FAQSection />
         <ContactSection />
       </main>

@@ -1,128 +1,115 @@
 import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
+import { AsciiBackground } from "@/components/graphics/AsciiBackground";
 
-// Fixed year keeps Footer prerender-compatible under Next.js `cacheComponents: true` (avoids dynamic Date() access).
 const YEAR = 2026;
 
+const SOLUTIONS = [
+  { label: "Desenvolvimento web", href: "/#solucoes" },
+  { label: "Sistemas personalizados", href: "/#solucoes" },
+  { label: "Automações", href: "/#solucoes" },
+  { label: "Produtos SaaS", href: "/#solucoes" },
+];
+
+const COMPANY_LINKS = [
+  { label: "Por que B2byte", href: "/#diferenciais" },
+  { label: "Processo", href: "/#processo" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contato", href: "/#contato" },
+  { label: "Política de Privacidade", href: "/politica-de-privacidade" },
+];
+
 export function Footer() {
-  const year = YEAR;
-
   return (
-    <footer className="border-t border-white/[0.07] py-11">
-      <div className="w-[min(1160px,calc(100%-48px))] mx-auto">
-        <div className="flex flex-col md:flex-row justify-between gap-10 mb-10">
-          <div className="max-w-xs">
-            <Link
-              href="/#inicio"
-              aria-label="B2byte — início"
-              className="inline-block mb-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] rounded"
+    <footer
+      className="m-3 border border-[var(--color-border)] rounded-[20px] relative isolate overflow-hidden pt-[48px] pb-[24px]"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 75%,#1E1B4B,#0B0F1A 70%)",
+      }}
+    >
+      <AsciiBackground opacity={0.15} />
+
+      {/* Footer grid */}
+      <div
+        className="relative z-[1] w-[min(1480px,calc(100%-100px))] mx-auto grid gap-5"
+        style={{ gridTemplateColumns: "2fr 1fr 1fr" }}
+      >
+        {/* Brand column */}
+        <div>
+          <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
+            B2byte
+          </span>
+          {siteConfig.contact.email && (
+            <a
+              href={`mailto:${siteConfig.contact.email}`}
+              className="inline-block text-[19px] mr-[14px] mb-[10px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
             >
-              <Image
-                src="/images/logo-mono-white.svg"
-                alt="B2byte Software Engineering"
-                width={110}
-                height={47}
-              />
-            </Link>
-            <p className="text-xs text-[var(--color-muted)] leading-relaxed">
-              Engenharia de software sob medida para empresas que querem crescer
-              com tecnologia bem projetada.
+              {siteConfig.contact.email} ↗
+            </a>
+          )}
+          {siteConfig.location && (
+            <p className="text-xs text-[var(--color-muted)] mt-1">
+              {siteConfig.location}
             </p>
-            {siteConfig.location && (
-              <p className="text-xs text-[var(--color-muted)] mt-2">
-                {siteConfig.location}
-              </p>
-            )}
-          </div>
-
-          <div className="flex flex-wrap gap-10">
-            <div>
-              <p className="text-xs font-semibold text-white mb-4 uppercase tracking-widest">
-                Soluções
-              </p>
-              <ul className="flex flex-col gap-3">
-                {siteConfig.footer.solutions.map((item) => (
-                  <li key={item.label}>
-                    <Link
-                      href={item.href}
-                      className="text-xs text-[var(--color-muted)] hover:text-white transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <p className="text-xs font-semibold text-white mb-4 uppercase tracking-widest">
-                Empresa
-              </p>
-              <ul className="flex flex-col gap-3">
-                {siteConfig.footer.links.map((item) => (
-                  <li key={item.label}>
-                    <Link
-                      href={item.href}
-                      className="text-xs text-[var(--color-muted)] hover:text-white transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {siteConfig.contact.email && (
-              <div>
-                <p className="text-xs font-semibold text-white mb-4 uppercase tracking-widest">
-                  Contato
-                </p>
-                <ul className="flex flex-col gap-3">
-                  <li>
-                    <a
-                      href={`mailto:${siteConfig.contact.email}`}
-                      className="text-xs text-[var(--color-muted)] hover:text-white transition-colors"
-                    >
-                      {siteConfig.contact.email}
-                    </a>
-                  </li>
-                  {siteConfig.contact.phone && (
-                    <li>
-                      <a
-                        href={`tel:${siteConfig.contact.phone}`}
-                        className="text-xs text-[var(--color-muted)] hover:text-white transition-colors"
-                      >
-                        {siteConfig.contact.phone}
-                      </a>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            )}
-          </div>
+          )}
         </div>
 
-        <div className="pt-6 border-t border-white/[0.07] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[var(--color-muted)]">
-            © {year} {siteConfig.name}. Todos os direitos reservados.
-          </p>
-          <div className="flex gap-5">
-            {Object.entries(siteConfig.social)
-              .filter(([, url]) => url)
-              .map(([platform, url]) => (
-                <a
-                  key={platform}
-                  href={url as string}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-[var(--color-muted)] hover:text-white transition-colors capitalize"
-                >
-                  {platform}
-                </a>
-              ))}
-          </div>
+        {/* Solutions column */}
+        <div>
+          <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
+            Soluções
+          </span>
+          {SOLUTIONS.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="inline-block mr-[14px] mb-[10px] text-[19px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
+
+        {/* Company column */}
+        <div>
+          <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
+            Empresa
+          </span>
+          {COMPANY_LINKS.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="inline-block mr-[14px] mb-[10px] text-[19px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Big logo */}
+      <div
+        className="relative z-[1] mx-auto block my-[45px]"
+        style={{ width: "min(100%,1050px)" }}
+        aria-hidden="true"
+      >
+        <Image
+          src="/images/logo-primary.svg"
+          alt=""
+          width={1050}
+          height={445}
+          className="w-full h-auto"
+        />
+      </div>
+
+      {/* Copyright */}
+      <div
+        className="relative z-[1] w-[min(1480px,calc(100%-100px))] mx-auto flex justify-between gap-[10px] border-t border-[var(--color-border)] pt-[18px] text-xs text-[var(--color-muted)]"
+      >
+        <span>© {YEAR} {siteConfig.name}. Todos os direitos reservados.</span>
+        <span>Desenvolvido pela equipe B2byte</span>
       </div>
     </footer>
   );

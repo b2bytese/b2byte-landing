@@ -1,182 +1,99 @@
-import { services, type ServiceId } from "@/data/services";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AsciiBackground } from "@/components/graphics/AsciiBackground";
 
-function WebMockup() {
+function StackedCard() {
   return (
     <div
-      aria-hidden="true"
-      className="h-[190px] border border-white/[0.08] rounded-xl bg-[var(--color-background)] overflow-hidden flex items-center justify-center p-[18px]"
+      className="relative z-[1] isolate"
+      style={{ width: "min(460px,75%)", padding: 26 }}
     >
-      <div className="w-[90%] border border-white/[0.13] rounded-lg bg-[var(--color-deep)] p-3 text-center shadow-[0_12px_30px_#0005]">
-        <small className="text-[var(--color-muted)] text-[11px]">
-          <span aria-hidden="true">◈</span> &nbsp; Sua marca &nbsp;·&nbsp; Sobre
-          &nbsp;·&nbsp; Contato
+      {/* Back layers (decorative) */}
+      <div
+        aria-hidden="true"
+        className="absolute rounded-[14px] border border-[#8B7CF655] bg-[var(--color-deep)]"
+        style={{ inset: "-20px 18px 20px", zIndex: -1, transform: "rotate(6deg)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute rounded-[14px] border border-[#8B7CF655] bg-[var(--color-deep)]"
+        style={{ inset: "-37px 36px 40px", zIndex: -2, transform: "rotate(12deg)" }}
+      />
+
+      {/* Card face */}
+      <div
+        className="rounded-[14px] border border-[#8B7CF688] shadow-[0_20px_70px_#0B0F1A]"
+        style={{
+          padding: 26,
+          background: "linear-gradient(145deg,#34394F,#121726)",
+          transform: "rotate(-3deg)",
+        }}
+      >
+        <small className="font-mono text-[11px] text-[var(--color-lavender)] tracking-[0.1em]">
+          B2BYTE / DIGITAL WORKSPACE
         </small>
-        <strong className="block font-display text-2xl font-semibold mt-5 mb-2">
-          Seu negócio.
+        <strong
+          className="block font-display font-medium text-[var(--color-brand-text)] my-[22px]"
+          style={{ fontSize: "clamp(25px,4vw,50px)" }}
+        >
+          Seu negócio,
           <br />
-          Em destaque.
+          conectado.
         </strong>
-        <div className="h-1 bg-[#8b7cf650] rounded w-[60%] mx-auto my-2.5" />
-        <span className="inline-block bg-[var(--color-primary)] rounded w-[70px] h-4 mt-1.5" />
-      </div>
-    </div>
-  );
-}
-
-function SystemsMockup() {
-  const heights = ["35%", "65%", "50%", "85%", "100%"];
-  return (
-    <div
-      aria-hidden="true"
-      className="h-[190px] border border-white/[0.08] rounded-xl bg-[var(--color-background)] overflow-hidden p-[18px]"
-    >
-      <div className="grid grid-cols-2 gap-2.5 h-full">
-        <div className="border border-white/[0.09] bg-[var(--color-surface)] rounded-lg p-3 text-[11px] text-[var(--color-muted)]">
-          <span className="block mb-1">Visão de operação</span>
-          <b className="text-white text-xl">24 atividades</b>
-          <div className="flex items-end gap-2 h-[60px] mt-2">
-            {heights.map((h, i) => (
-              <span
-                key={i}
-                className="flex-1 rounded-t"
-                style={{
-                  height: h,
-                  background: "linear-gradient(#8b7cf6,#5046e533)",
-                }}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="border border-white/[0.09] bg-[var(--color-surface)] rounded-lg p-3 text-[11px] text-[var(--color-muted)]">
-          <span className="block mb-1">Controle de tarefas</span>
-          <b className="text-white block mb-3">Em andamento</b>
-          <p className="mb-2 text-[var(--color-success)]">
-            <span aria-hidden="true">✓</span> Cadastro atualizado
-          </p>
-          <p className="mb-2 text-[var(--color-success)]">
-            <span aria-hidden="true">✓</span> Estoque integrado
-          </p>
-          <p className="text-[var(--color-muted)]">
-            <span aria-hidden="true">○</span> Revisão pendente
-          </p>
+        <div className="flex justify-between border-t border-[#8B7CF655] pt-[14px] text-[var(--color-muted)] text-xs">
+          <span>Web · Systems · Automation</span>
+          <span aria-hidden="true">↗</span>
         </div>
       </div>
     </div>
   );
 }
-
-function AutomationMockup() {
-  return (
-    <div
-      aria-hidden="true"
-      className="h-[190px] border border-white/[0.08] rounded-xl bg-[var(--color-background)] overflow-hidden flex items-center justify-center p-[18px]"
-    >
-      <div className="flex items-center gap-2 flex-wrap justify-center">
-        {[
-          { icon: "↳", label: "Entrada" },
-          { icon: "→", arrow: true },
-          { icon: "⌘", label: "Processar" },
-          { icon: "→", arrow: true },
-          { icon: "✓", label: "Entregar" },
-        ].map((node, i) =>
-          node.arrow ? (
-            <span
-              key={i}
-              aria-hidden="true"
-              className="text-[var(--color-accent)]"
-            >
-              →
-            </span>
-          ) : (
-            <div
-              key={i}
-              className="border border-[#8b7cf655] bg-[var(--color-deep)] px-3 py-3 rounded-lg text-xs text-[var(--color-lavender)]"
-            >
-              <span aria-hidden="true">{node.icon}</span> {node.label}
-            </div>
-          )
-        )}
-      </div>
-    </div>
-  );
-}
-
-function SaaSMockup() {
-  return (
-    <div
-      aria-hidden="true"
-      className="h-[190px] border border-white/[0.08] rounded-xl bg-[var(--color-background)] overflow-hidden flex items-center p-[18px]"
-    >
-      <pre className="font-mono text-xs leading-[1.9] text-[var(--color-lavender)]">
-        <span className="text-[var(--color-muted)]">
-          {"// Da ideia à produção"}
-        </span>
-        {"\n"}
-        {"const produto = {"}
-        {"\n"}
-        {"  arquitetura: "}
-        <span className="text-white">{'"escalável"'}</span>
-        {",\n  experiência: "}
-        <span className="text-white">{'"intuitiva"'}</span>
-        {",\n  evolução: "}
-        <span className="text-white">{'"contínua"'}</span>
-        {"\n"}
-        {"};"}
-      </pre>
-    </div>
-  );
-}
-
-const mockups: Record<ServiceId, React.ReactNode> = {
-  web: <WebMockup />,
-  systems: <SystemsMockup />,
-  automation: <AutomationMockup />,
-  saas: <SaaSMockup />,
-};
 
 export function SolutionsSection() {
   return (
     <section
       id="solucoes"
-      className="py-[100px] border-b border-white/[0.07]"
+      className="py-[110px] border-b border-[var(--color-border)]"
       aria-labelledby="solucoes-heading"
     >
-      <div className="w-[min(1160px,calc(100%-48px))] mx-auto">
-        <SectionHeading
-          id="solucoes-heading"
-          eyebrow="01 / O que fazemos"
-          title={
-            <>
-              Uma solução para cada
-              <br />
-              <span className="text-[var(--color-accent)]">
-                desafio do seu negócio.
-              </span>
-            </>
-          }
-          description="Da presença digital à automação de operações, criamos tecnologia que se encaixa no seu dia a dia."
-          center
-        />
+      <div className="w-[min(1480px,calc(100%-100px))] mx-auto">
+        <span
+          className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[30px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]"
+          aria-hidden="true"
+        >
+          01 / O que fazemos
+        </span>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          {services.map((service) => (
-            <article
-              key={service.id}
-              className="bg-[var(--color-surface)] border border-white/[0.07] rounded-[17px] p-7 overflow-hidden relative"
-            >
-              <span className="font-mono text-[11px] text-[var(--color-accent)] block mb-[17px]">
-                {service.num}
-              </span>
-              <h3 className="font-display text-[25px] font-semibold tracking-[-0.035em] leading-[1.06]">
-                {service.title}
-              </h3>
-              <p className="text-[var(--color-muted)] max-w-[420px] mt-3 mb-6">
-                {service.description}
-              </p>
-              {mockups[service.id]}
-            </article>
-          ))}
+        {/* Editorial header */}
+        <div
+          className="grid gap-[9%] items-end mb-[54px]"
+          style={{ gridTemplateColumns: "1.8fr 1fr" }}
+        >
+          <h2
+            id="solucoes-heading"
+            className="font-display font-medium tracking-[-0.065em] leading-[1.02] text-[var(--color-brand-text)]"
+            style={{ fontSize: "clamp(38px,5.1vw,76px)" }}
+          >
+            Construímos tecnologia
+            <br />
+            para transformar{" "}
+            <span className="text-[var(--color-accent)]">sua operação.</span>
+          </h2>
+          <p className="text-[var(--color-muted)]" style={{ fontSize: 18 }}>
+            Da presença digital à automação de operações, criamos tecnologia que
+            se encaixa no seu dia a dia.
+          </p>
+        </div>
+
+        {/* Feature art */}
+        <div
+          className="relative isolate overflow-hidden rounded-[18px] border border-[var(--color-border)] grid place-items-center"
+          style={{
+            minHeight: 390,
+            background:
+              "radial-gradient(ellipse at 50% 60%,#1E1B4B,#121726 75%)",
+          }}
+        >
+          <AsciiBackground opacity={0.25} />
+          <StackedCard />
         </div>
       </div>
     </section>

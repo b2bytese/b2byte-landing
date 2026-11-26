@@ -8,12 +8,12 @@ describe("globals.css (Tailwind CSS v4 cascade)", () => {
     "utf8"
   );
 
-  it("declara html (com scroll-padding-top), body e :focus-visible dentro de @layer base", () => {
+  it("declara html, body e :focus-visible dentro de @layer base", () => {
     const layerBaseMatch = css.match(/@layer\s+base\s*\{([\s\S]*?)\n\}/);
     expect(layerBaseMatch).not.toBeNull();
     const layerBaseContent = layerBaseMatch?.[1] ?? "";
 
-    expect(layerBaseContent).toMatch(/html\s*\{[\s\S]*scroll-padding-top:\s*84px/);
+    expect(layerBaseContent).toMatch(/html\s*\{/);
     expect(layerBaseContent).toMatch(/body\s*\{/);
     expect(layerBaseContent).toMatch(/:focus-visible\s*\{/);
   });
