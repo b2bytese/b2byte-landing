@@ -142,7 +142,7 @@ export function HeroSection() {
             : siteConfig.shortName}
         </span>
 
-        <h1 className="font-display font-medium tracking-[-0.065em] leading-[1.02] max-w-[970px] mx-auto mb-[25px]" style={{ fontSize: "clamp(48px,7.2vw,106px)" }}>
+        <h1 className="font-display font-medium tracking-[-0.065em] leading-[1.02] mb-[25px]" style={{ fontSize: "clamp(48px,7.2vw,106px)" }}>
           Tecnologia que faz seu <br className="hidden sm:block" /> negócio{" "}
           <span className="text-[var(--color-accent)]">ir mais longe.</span>
         </h1>

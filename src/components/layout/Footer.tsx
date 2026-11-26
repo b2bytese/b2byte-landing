@@ -5,19 +5,10 @@ import { AsciiBackground } from "@/components/graphics/AsciiBackground";
 
 const YEAR = 2026;
 
-const SOLUTIONS = [
-  { label: "Desenvolvimento web", href: "/#solucoes" },
-  { label: "Sistemas personalizados", href: "/#solucoes" },
-  { label: "Automações", href: "/#solucoes" },
-  { label: "Produtos SaaS", href: "/#solucoes" },
-];
-
-const COMPANY_LINKS = [
-  { label: "Por que B2byte", href: "/#diferenciais" },
+const NAV_LINKS = [
+  { label: "Soluções", href: "/#solucoes" },
+  { label: "Sobre nós", href: "/#diferenciais" },
   { label: "Processo", href: "/#processo" },
-  { label: "FAQ", href: "/#faq" },
-  { label: "Contato", href: "/#contato" },
-  { label: "Política de Privacidade", href: "/politica-de-privacidade" },
 ];
 
 export function Footer() {
@@ -36,56 +27,53 @@ export function Footer() {
         className="relative z-[1] w-[min(1480px,calc(100%-100px))] mx-auto grid gap-5"
         style={{ gridTemplateColumns: "2fr 1fr 1fr" }}
       >
-        {/* Brand column */}
+        {/* Navigation column */}
         <div>
           <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
-            B2byte
+            Navegação
           </span>
-          {siteConfig.contact.email && (
-            <a
-              href={`mailto:${siteConfig.contact.email}`}
-              className="inline-block text-[19px] mr-[14px] mb-[10px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
-            >
-              {siteConfig.contact.email} ↗
-            </a>
-          )}
+          <div className="flex flex-wrap gap-x-[14px] gap-y-[10px]">
+            {NAV_LINKS.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="text-[19px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact column */}
+        <div>
+          <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
+            Contato
+          </span>
+          <Link
+            href="/#contato"
+            className="text-[19px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
+          >
+            Vamos conversar ↗
+          </Link>
+        </div>
+
+        {/* Location column */}
+        <div>
+          <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
+            Localização
+          </span>
           {siteConfig.location && (
-            <p className="text-xs text-[var(--color-muted)] mt-1">
+            <p className="text-[19px] text-[var(--color-brand-text)] mb-[10px]">
               {siteConfig.location}
             </p>
           )}
-        </div>
-
-        {/* Solutions column */}
-        <div>
-          <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
-            Soluções
-          </span>
-          {SOLUTIONS.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="inline-block mr-[14px] mb-[10px] text-[19px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Company column */}
-        <div>
-          <span className="font-mono text-[12px] uppercase tracking-[0.13em] text-[var(--color-lavender)] block mb-[15px] before:content-['●'] before:text-[var(--color-accent)] before:mr-[10px] before:text-[9px]">
-            Empresa
-          </span>
-          {COMPANY_LINKS.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="inline-block mr-[14px] mb-[10px] text-[19px] text-[var(--color-brand-text)] hover:text-[var(--color-accent)] transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
+          <a
+            href="#inicio"
+            className="text-[19px] text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors"
+          >
+            Voltar ao topo ↑
+          </a>
         </div>
       </div>
 
@@ -105,11 +93,9 @@ export function Footer() {
       </div>
 
       {/* Copyright */}
-      <div
-        className="relative z-[1] w-[min(1480px,calc(100%-100px))] mx-auto flex justify-between gap-[10px] border-t border-[var(--color-border)] pt-[18px] text-xs text-[var(--color-muted)]"
-      >
-        <span>© {YEAR} {siteConfig.name}. Todos os direitos reservados.</span>
-        <span>Desenvolvido pela equipe B2byte</span>
+      <div className="relative z-[1] w-[min(1480px,calc(100%-100px))] mx-auto flex justify-between gap-[10px] border-t border-[var(--color-border)] pt-[18px] text-xs text-[var(--color-muted)]">
+        <span>© {YEAR} {siteConfig.name}.</span>
+        <span>Todos os direitos reservados.</span>
       </div>
     </footer>
   );
